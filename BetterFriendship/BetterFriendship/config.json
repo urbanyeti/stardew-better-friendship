@@ -1,0 +1,9 @@
+{
+  "DisplayTalkPrompt": true,
+  "GiftPreference": "like",
+  "GiftCycleCount": 3,
+  "GiftCycleDelay": 2000,
+  "IgnoreMaxedFriendships": true,
+  "OnlyHighestQuality": false,
+  "DisplayBubbles": true
+}

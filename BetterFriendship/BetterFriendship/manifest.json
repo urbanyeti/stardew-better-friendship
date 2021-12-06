@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Better Friendship",
+  "Author": "Urbanyeti",
+  "Version": "1.0.0",
+  "Description": "Makes managing friendships with townsfolk easier",
+  "UniqueID": "BetterFriendship",
+  "EntryDll": "BetterFriendship.dll",
+  "MinimumApiVersion": "3.13.1",
+  "UpdateKeys": []
+}
