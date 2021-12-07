@@ -2,7 +2,7 @@
   "Name": "Better Friendship",
   "Author": "Urbanyeti",
   "Version": "1.0.0",
-  "Description": "Adds in-world indicators to help making managing friendships easier and gift suggestions.",
+  "Description": "Adds in-world indicators and gift suggestions to make managing friendships easier.",
   "UniqueID": "BetterFriendship",
   "EntryDll": "BetterFriendship.dll",
   "MinimumApiVersion": "3.13.1",
