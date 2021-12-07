@@ -2,9 +2,9 @@
   "Name": "Better Friendship",
   "Author": "Urbanyeti",
   "Version": "1.0.0",
-  "Description": "Makes managing friendships with townsfolk easier",
+  "Description": "Adds in-world indicators to help making managing friendships easier and gift suggestions.",
   "UniqueID": "BetterFriendship",
   "EntryDll": "BetterFriendship.dll",
   "MinimumApiVersion": "3.13.1",
-  "UpdateKeys": []
+  "UpdateKeys": [ "Nexus:10287" ]
 }
