@@ -68,7 +68,7 @@ namespace BetterFriendship
 
                 if (Config.IgnoreMaxedFriendships && !FriendshipCanDecay(npc, friendship)) continue;
 
-                if (Config.GiftPreference == "none" || friendship.GiftsToday != 0 || friendship.GiftsThisWeek >= 2)
+                if (npc is Child || Config.GiftPreference == "none" || friendship.GiftsToday != 0 || friendship.GiftsThisWeek >= 2)
                 {
                     if (!Config.DisplayTalkPrompts || friendship.TalkedToToday) continue;
 
