@@ -59,16 +59,21 @@ namespace BetterFriendship
 
             var currentLocation = Game1.currentLocation;
 
-            if (!Config.DisplayBubbles || Config.GiftPreference == "none" && !Config.DisplayTalkPrompts) return;
+            if (!Config.DisplayBubbles || (Config.GiftPreference == "none" && !Config.DisplayTalkPrompts)) return;
 
             foreach (var npc in currentLocation.characters.Where(npc =>
-                         npc.IsTownsfolk() || npc is Child child && child.daysOld.Value > 14))
+                         npc.IsTownsfolk() || (npc is Child child && child.daysOld.Value > 14)))
             {
                 if (!Game1.player.friendshipData.TryGetValue(npc.Name, out var friendship)) continue;
 
                 if (Config.IgnoreMaxedFriendships && !FriendshipCanDecay(npc, friendship)) continue;
 
-                if (npc is Child || Config.GiftPreference == "none" || friendship.GiftsToday != 0 || (Game1.player.spouse != npc.Name && friendship.GiftsThisWeek >= 2))
+                if (Config.GiftPreference == "none" ||
+                    npc is Child ||
+                    friendship.GiftsToday != 0 ||
+                    (friendship.GiftsThisWeek >= 2 && Game1.player.spouse != npc.Name &&
+                     !npc.isBirthday(Game1.Date.Season, Game1.Date.DayOfMonth))
+                   )
                 {
                     if (!Config.DisplayTalkPrompts || friendship.TalkedToToday) continue;
 
@@ -101,7 +106,7 @@ namespace BetterFriendship
             if (friendship.IsDating() && friendship.Points < 2500) return true;
 
             var isPreBouquet = npc.datable.Value && !friendship.IsDating() && !npc.isMarried();
-            return !isPreBouquet && friendship.Points < 2500 || isPreBouquet && friendship.Points < 2000;
+            return (!isPreBouquet && friendship.Points < 2500) || (isPreBouquet && friendship.Points < 2000);
         }
 
         private void SetupConfigMenu(IGenericModConfigMenuApi configMenu)
