@@ -2,7 +2,7 @@
 
 *Are you tired of constantly having to dig through multiple wiki pages or mod menus every time you want to give a villager a gift? Wouldn't it be easier if there was just a visual indicator of who can receive a gift and who you can talk to? You deserve **Better Friendship**!*
 
-**Update 1.0.1 (12/7/21): Fixed a bug where trying to pick out gift suggestions for child NPCs was throwing errors in the logs.
+##Update 1.0.1 (12/7/21): Fixed a bug where trying to pick out gift suggestions for child NPCs was throwing errors in the logs.
 
 **Compatible with Stardew Valley 1.5.5+ on Linux, Mac, and Windows** [Requires SMAPI 3.13.1 or later.](https://github.com/Pathoschild/SMAPI/releases)
 
