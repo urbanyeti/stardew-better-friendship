@@ -1,15 +1,14 @@
 # Changelog
 
-## Better Ranching 1.0.1 (07/12/2021)
-## Bug Fixes
+## v1.0.1 (07/12/2021)
+### Bug Fixes
 - Fixed a bug where trying to pick out gift suggestions for child NPCs was throwing errors in the logs.
 
 **Full Changelog**: https://github.com/urbanyeti/stardew-better-friendship/compare/v1.0.0...v1.0.1
 ---
 
-## Better Ranching 1.0.0 (07/12/2021)
-## Features
-
+## v1.0.0 (07/12/2021)
+### Features
 - Each villager shows an at-a-glance display of whether they can receive gifts or want to be talked to!
 - Simple gift suggestions based on what you are currently carrying!
 - Customizable preferences with built-in config menu (requires [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098))
