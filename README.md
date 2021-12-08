@@ -2,9 +2,7 @@
 
 *Are you tired of constantly having to dig through multiple wiki pages or mod menus every time you want to give a villager a gift? Wouldn't it be easier if there was just a visual indicator of who can receive a gift and who you can talk to? You deserve **Better Friendship**!*
 
-## Update 1.0.1 (12/7/21): Fixed a bug where trying to pick out gift suggestions for child NPCs was throwing errors in the logs.
-
-**Compatible with Stardew Valley 1.5.5+ on Linux, Mac, and Windows** [Requires SMAPI 3.13.1 or later.](https://github.com/Pathoschild/SMAPI/releases)
+**Update 1.0.1 (12/7/21): Fixed a bug where trying to pick out gift suggestions for child NPCs was throwing errors in the logs.**
 
 ![](https://github.com/urbanyeti/stardew-better-friendship/blob/main/misc/multiple-gift.gif)
 
@@ -20,7 +18,7 @@
   - Preference to only display the highest quality available for each item
 
 ## Install 
-
+**Compatible with Stardew Valley 1.5.5+ on Linux, Mac, and Windows** [Requires SMAPI 3.13.1 or later.](https://github.com/Pathoschild/SMAPI/releases)
 1. [Install the latest version of SMAPI](https://github.com/Pathoschild/SMAPI/releases).
 2. Unzip the mod folder into Stardew Valley/Mods.
 3. (optional) Install [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098)﻿ for easy config setting management.
