@@ -1,6 +1,14 @@
 # Changelog
 
-## v1.0.0 (08/12/2021)
+## v1.0.1 (2021/12/08)
+
+#### Bug Fixes:
+
+- [#5](https://github.com/urbanyeti/stardew-better-friendship/issues/5) Trying to get gift tastes for children NPCs outputting errors
+
+---
+
+## v1.0.0 (2021/12/08)
 
 #### Enhancements:
 
@@ -10,15 +18,7 @@
 
 ---
 
-## v1.0.1 (08/12/2021)
-
-#### Bug Fixes:
-
-- [#5](https://github.com/urbanyeti/stardew-better-friendship/issues/5) Trying to get gift tastes for children NPCs outputting errors
-
----
-
-## v1.0.2 (08/12/2021)
+## v1.0.2 (2021/12/08)
 
 #### Enhancements:
 
