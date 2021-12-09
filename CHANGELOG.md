@@ -1,10 +1,31 @@
 # Changelog
 
+## v1.0.0 (08/12/2021)
+
+#### Enhancements:
+
+- [#8](https://github.com/urbanyeti/stardew-better-friendship/issues/8) Build config menu for customizable preferences
+- [#7](https://github.com/urbanyeti/stardew-better-friendship/issues/7) Check player inventory and cycle through gift options for each villager
+- [#6](https://github.com/urbanyeti/stardew-better-friendship/issues/6) Add over-head displays to viallgers for when they can receive gifts or be talked to
+
+---
+
+## v1.0.1 (08/12/2021)
+
+#### Bug Fixes:
+
+- [#5](https://github.com/urbanyeti/stardew-better-friendship/issues/5) Trying to get gift tastes for children NPCs outputting errors
+
+---
+
 ## v1.0.2 (08/12/2021)
 
-#### bug
+#### Enhancements:
 
-- [**bug**] Investigate empty bubbles / Improve error handling around deleted items [#4](https://github.com/urbanyeti/stardew-better-friendship/issues/4)
-- [**bug**] Multiple spouse gifts per week not showing [#3](https://github.com/urbanyeti/stardew-better-friendship/issues/3)
-- [**bug**] Handle birthday gifts [#2](https://github.com/urbanyeti/stardew-better-friendship/issues/2)
-- [**bug**] Investigate possible stuttering during special events [#1](https://github.com/urbanyeti/stardew-better-friendship/issues/1)
+- [#4](https://github.com/urbanyeti/stardew-better-friendship/issues/4) Investigate empty bubbles / Improve error handling around deleted items
+- [#1](https://github.com/urbanyeti/stardew-better-friendship/issues/1) Improve performance for multiple NPCs in location
+
+#### Bug Fixes:
+
+- [#3](https://github.com/urbanyeti/stardew-better-friendship/issues/3) Multiple spouse gifts per week not showing
+- [#2](https://github.com/urbanyeti/stardew-better-friendship/issues/2) Handle 3rd weekly gift on birthdays
