@@ -4,6 +4,7 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Object = StardewValley.Object;
 
 namespace BetterFriendship
@@ -30,7 +31,8 @@ namespace BetterFriendship
             BubbleOffset += offset;
         }
 
-        public void DrawBubble(SpriteBatch spriteBatch, Character character, List<(Object item, int taste)> bestItems, bool displayGift, bool displayTalk)
+        public void DrawBubble(SpriteBatch spriteBatch, Character character, List<(Object item, int taste)> bestItems,
+            bool displayGift, bool displayTalk)
         {
             if (!displayGift && !displayTalk)
             {
@@ -40,7 +42,7 @@ namespace BetterFriendship
             character.Position.Deconstruct(out var xPosition, out var yPosition);
 
             var hoverVal = (float)(4.0 * Math.Round(Math.Sin(DateTime.Now.TimeOfDay.TotalMilliseconds / 250.0), 2)) -
-                      (Game1.tileSize / 2);
+                           (Game1.tileSize / 2);
 
             // Thought bubble
             spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
@@ -106,7 +108,6 @@ namespace BetterFriendship
                             2);
                         break;
                     }
-
             }
 
             switch (displayTalk)
@@ -140,22 +141,23 @@ namespace BetterFriendship
             {
                 0 => new Rectangle(9, 27, 9, 9),
                 2 => new Rectangle(0, 0, 9, 9),
-                not 4 or 6 => new Rectangle(18,9,9,9),
-                _ => new Rectangle(0,0,0,0)
+                not 4 or 6 => new Rectangle(18, 9, 9, 9),
+                _ => new Rectangle(0, 0, 0, 0)
             };
 
         private int SelectIem(IReadOnlyCollection<(Object item, int taste)> bestItems)
         {
-            if (!bestItems.Any())
+            if (!bestItems.Any() || _lastCycledItem >= bestItems.Count)
             {
                 _lastCycledTime = 0;
                 _lastCycledItem = 0;
                 return -1;
             }
 
-            if (!(DateTime.Now.TimeOfDay.TotalMilliseconds >= _lastCycledTime + _config.GiftCycleDelay)) return _lastCycledItem;
+            if (!(Game1.currentGameTime.TotalGameTime.TotalMilliseconds >= _lastCycledTime + _config.GiftCycleDelay))
+                return _lastCycledItem;
             _lastCycledItem = (_lastCycledItem + 1) % bestItems.Count;
-            _lastCycledTime = DateTime.Now.TimeOfDay.TotalMilliseconds;
+            _lastCycledTime = Game1.currentGameTime.TotalGameTime.TotalMilliseconds;
 
             return _lastCycledItem;
         }
