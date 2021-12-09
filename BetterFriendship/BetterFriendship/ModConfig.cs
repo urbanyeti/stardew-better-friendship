@@ -9,7 +9,6 @@ namespace BetterFriendship
         public int GiftCycleDelay { get; set; } = 2000;
         public bool IgnoreMaxedFriendships { get; set; } = false;
         public bool DisplayBubbles { get; set; } = true;
-        public bool Debug { get; set; } = false;
 
         private string _giftPreference = "like";
         private int _giftCycleCount = 5;

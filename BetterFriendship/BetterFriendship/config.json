@@ -5,6 +5,5 @@
   "GiftCycleDelay": 150000,
   "IgnoreMaxedFriendships": false,
   "OnlyHighestQuality": false,
-  "DisplayBubbles": true,
-  "Debug" : false 
+  "DisplayBubbles": true
 }

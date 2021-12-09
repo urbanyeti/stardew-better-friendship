@@ -214,15 +214,6 @@ namespace BetterFriendship
                 getValue: () => Config.DisplayBubbles,
                 setValue: value => Config.DisplayBubbles = value
             );
-
-            configMenu.AddBoolOption(
-                ModManifest,
-                name: () => "[!] Debug",
-                tooltip: () =>
-                    "Debug",
-                getValue: () => Config.Debug,
-                setValue: value => Config.Debug = value
-            );
         }
     }
 }
