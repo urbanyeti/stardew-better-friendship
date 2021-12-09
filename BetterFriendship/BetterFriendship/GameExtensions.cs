@@ -16,7 +16,23 @@ namespace BetterFriendship
                    && npc is not TrashBear;
         }
 
-        public static IEnumerable<(Object, int)> TakeTopPrioritized(this IEnumerable<(Object item, int taste)> items,
+        public static List<(Object, int)> GetTopGiftSuggestions(this NPC npc, ModConfig config)
+        {
+            return
+            Game1.player.Items.Where(x => x is Object)
+                .Select(x => (item: x as Object, taste: npc.getGiftTasteForThisItem(x)))
+                .Where(x => config.GiftPreference switch
+                {
+                    "love" => x.taste is 0,
+                    "like" => x.taste is 0 or 2,
+                    "neutral" => x.taste is not 4 or 6,
+                    _ => false
+                })
+                .TakeTopPrioritized(config)
+                .ToList();
+        }
+
+        private static IEnumerable<(Object, int)> TakeTopPrioritized(this IEnumerable<(Object item, int taste)> items,
             ModConfig config)
         {
             if (config.OnlyHighestQuality)

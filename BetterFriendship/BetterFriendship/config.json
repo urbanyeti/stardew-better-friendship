@@ -2,8 +2,9 @@
   "DisplayTalkPrompt": true,
   "GiftPreference": "like",
   "GiftCycleCount": 5,
-  "GiftCycleDelay": 2000,
+  "GiftCycleDelay": 150000,
   "IgnoreMaxedFriendships": false,
   "OnlyHighestQuality": false,
-  "DisplayBubbles": true
+  "DisplayBubbles": true,
+  "Debug" : false 
 }

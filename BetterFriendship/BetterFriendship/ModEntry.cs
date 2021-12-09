@@ -1,8 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Characters;
+using Object = StardewValley.Object;
+using System.Runtime.Caching;
+using System.ComponentModel;
 
 namespace BetterFriendship
 {
@@ -11,6 +16,7 @@ namespace BetterFriendship
     {
         private ModConfig Config { get; set; }
         private BubbleDrawer BubbleDrawer { get; set; }
+        private readonly ObjectCache _cache = MemoryCache.Default;
 
         /*********
         ** Public methods
@@ -25,6 +31,8 @@ namespace BetterFriendship
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             helper.Events.Display.RenderedWorld += OnRenderedWorld;
+            helper.Events.Player.InventoryChanged += OnInventoryChanged;
+            Config.PropertyChanged += OnConfigChanged;
         }
 
         /// <summary>
@@ -46,7 +54,7 @@ namespace BetterFriendship
         /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private static void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             // ignore if player hasn't loaded a save yet
             if (!Context.IsWorldReady)
@@ -81,17 +89,18 @@ namespace BetterFriendship
                     continue;
                 }
 
-                var bestItems = Game1.player.Items.Where(x => x is Object)
-                    .Select(x => (item: x as Object, taste: npc.getGiftTasteForThisItem(x)))
-                    .Where(x => Config.GiftPreference switch
-                    {
-                        "love" => x.taste is 0,
-                        "like" => x.taste is 0 or 2,
-                        "neutral" => x.taste is not 4 or 6,
-                        _ => false
-                    })
-                    .TakeTopPrioritized(Config)
-                    .ToList();
+                List<(Object, int)> bestItems;
+
+                if (_cache.Contains(npc.Name))
+                {
+                    bestItems = _cache.Get(npc.Name) as List<(Object, int)>;
+                }
+                else
+                {
+                    bestItems = npc.GetTopGiftSuggestions(Config);
+                    _cache.Add(new CacheItem(npc.Name, bestItems),
+                        new CacheItemPolicy() { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(5) });
+                }
 
                 BubbleDrawer.DrawBubble(Game1.spriteBatch, npc, bestItems,
                     true,
@@ -107,6 +116,20 @@ namespace BetterFriendship
 
             var isPreBouquet = npc.datable.Value && !friendship.IsDating() && !npc.isMarried();
             return (!isPreBouquet && friendship.Points < 2500) || (isPreBouquet && friendship.Points < 2000);
+        }
+
+
+        private void OnConfigChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is not (nameof(ModConfig.GiftPreference) or nameof(ModConfig.GiftCycleCount)
+                or nameof(ModConfig.OnlyHighestQuality))) return;
+
+            foreach (var key in _cache.Select(x => x.Key)) _cache.Remove(key);
+        }
+
+        private void OnInventoryChanged(object sender, InventoryChangedEventArgs e)
+        {
+            foreach (var key in _cache.Select(x => x.Key)) _cache.Remove(key);
         }
 
         private void SetupConfigMenu(IGenericModConfigMenuApi configMenu)
@@ -190,6 +213,15 @@ namespace BetterFriendship
                     "Allows floating bubbles to be displayed over villagers. Warning: Turning this off will hide ALL floating bubbles enabled by this mod (talk prompts, gift suggestions, etc.)",
                 getValue: () => Config.DisplayBubbles,
                 setValue: value => Config.DisplayBubbles = value
+            );
+
+            configMenu.AddBoolOption(
+                ModManifest,
+                name: () => "[!] Debug",
+                tooltip: () =>
+                    "Debug",
+                getValue: () => Config.Debug,
+                setValue: value => Config.Debug = value
             );
         }
     }
