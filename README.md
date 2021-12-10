@@ -2,7 +2,7 @@
 
 *Are you tired of constantly having to dig through multiple wiki pages or mod menus every time you want to give a villager a gift? Wouldn't it be easier if there was just a visual indicator of who can receive a gift and who you can talk to? You deserve **Better Friendship**!*
 
-**Update 1.0.1 (12/7/21): Fixed a bug where trying to pick out gift suggestions for child NPCs was throwing errors in the logs.**
+**Update 1.0.3 (2021/12/09): Fixed a bug where gift suggestions would be missing or rapidly cycle when multiple NPCs were around**
 
 ![](https://github.com/urbanyeti/stardew-better-friendship/blob/main/misc/multiple-gift.gif)
 
@@ -23,6 +23,9 @@
 2. Unzip the mod folder into Stardew Valley/Mods.
 3. (optional) Install [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098)﻿ for easy config setting management.
 4. Run the game using SMAPI.
+
+## Special Thanks
+- [NormanPCN](https://www.nexusmods.com/stardewvalley/users/124597098) has been incredibly helpful in providing background for some of the game mechanics and has been invaluable in helping me test and debug
 
 ## Other Mod
 If you like this mod, consider checking out my other mod, [Better Ranching](https://www.nexusmods.com/stardewvalley/mods/859)﻿ (>15k endorsements)! I took a similar approach to try to remove some of the pain points from the ranching experience while still sticking to the spirit of the game. 

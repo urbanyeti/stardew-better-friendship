@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.0.3 (2021/12/09)
+
+#### Bug Fixes:
+
+- [#9](https://github.com/urbanyeti/stardew-better-friendship/issues/9) Gifts cycling rapidly/ not display with multiple NPCs
+
+---
+
 ## v1.0.1 (2021/12/08)
 
 #### Bug Fixes:
