@@ -13,8 +13,7 @@ namespace BetterFriendship
     {
         public Vector2 BubbleOffset { get; private set; }
         private readonly ModConfig _config;
-        private double _lastCycledTime;
-        private int _lastCycledItem;
+        private readonly Dictionary<string, (int item, double time)> _lastCycled = new();
         private readonly Rectangle _giftSourceRectangle = new(167, 175, 12, 11);
         private readonly Rectangle _talkSourceRectangle = new(181, 175, 12, 11);
         private readonly Texture2D _emojiTexture2D;
@@ -64,7 +63,7 @@ namespace BetterFriendship
                         1);
                     break;
                 case true:
-                    var selectedItem = SelectIem(bestItems);
+                    var selectedItem = SelectIem(character.Name, bestItems);
                     if (selectedItem == -1)
                     {
                         spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
@@ -145,21 +144,19 @@ namespace BetterFriendship
                 _ => new Rectangle(0, 0, 0, 0)
             };
 
-        private int SelectIem(IReadOnlyCollection<(Object item, int taste)> bestItems)
+        private int SelectIem(string npcName, IReadOnlyCollection<(Object item, int taste)> bestItems)
         {
-            if (!bestItems.Any() || _lastCycledItem >= bestItems.Count)
+            if (!bestItems.Any() || !_lastCycled.ContainsKey(npcName) || _lastCycled[npcName].item >= bestItems.Count)
             {
-                _lastCycledTime = 0;
-                _lastCycledItem = 0;
+                _lastCycled[npcName] = (0, 0);
                 return -1;
             }
 
-            if (!(Game1.currentGameTime.TotalGameTime.TotalMilliseconds >= _lastCycledTime + _config.GiftCycleDelay))
-                return _lastCycledItem;
-            _lastCycledItem = (_lastCycledItem + 1) % bestItems.Count;
-            _lastCycledTime = Game1.currentGameTime.TotalGameTime.TotalMilliseconds;
+            if (!(Game1.currentGameTime.TotalGameTime.TotalMilliseconds >= _lastCycled[npcName].time + _config.GiftCycleDelay))
+                return _lastCycled[npcName].item;
+            _lastCycled[npcName] = ((_lastCycled[npcName].item + 1) % bestItems.Count, Game1.currentGameTime.TotalGameTime.TotalMilliseconds);
 
-            return _lastCycledItem;
+            return _lastCycled[npcName].item;
         }
     }
 }
