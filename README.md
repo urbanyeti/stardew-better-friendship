@@ -25,7 +25,7 @@
 4. Run the game using SMAPI.
 
 ## Special Thanks
-- [NormanPCN](https://www.nexusmods.com/stardewvalley/users/124597098) has been incredibly helpful in providing background for some of the game mechanics and has been invaluable in helping me test and debug
+- [NormanPCN](https://www.nexusmods.com/stardewvalley/users/124597098) has been incredibly helpful in providing background for some of the game mechanics and helping me test and debug!
 
 ## Other Mod
 If you like this mod, consider checking out my other mod, [Better Ranching](https://www.nexusmods.com/stardewvalley/mods/859)﻿ (>15k endorsements)! I took a similar approach to try to remove some of the pain points from the ranching experience while still sticking to the spirit of the game. 
