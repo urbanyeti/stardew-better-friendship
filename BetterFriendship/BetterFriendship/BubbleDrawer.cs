@@ -43,75 +43,117 @@ namespace BetterFriendship
             var hoverVal = (float)(4.0 * Math.Round(Math.Sin(DateTime.Now.TimeOfDay.TotalMilliseconds / 250.0), 2)) -
                            (Game1.tileSize / 2);
 
-            // Thought bubble
-            spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                    xPosition + BubbleOffset.X,
-                    yPosition - BubbleOffset.Y + hoverVal)),
-                new Rectangle(141, 465, 20, 24),
-                Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None,
-                0);
+            var selectedItem = displayGift ? SelectIem(character.Name, bestItems) : -1;
 
             // Icon(s)
             switch (displayGift)
             {
                 case true when displayTalk:
-                    spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
+                    if (selectedItem == -1)
+                    {
+                        if (!_config.DisplayGenericGiftPrompts)
+                        {
+                            break;
+                        }
+
+                        // Thought bubble
+                        spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
+                                xPosition + BubbleOffset.X,
+                                yPosition - BubbleOffset.Y + hoverVal)),
+                            new Rectangle(141, 465, 20, 24),
+                            Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0);
+
+                        spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
                             xPosition + BubbleOffset.X + 6,
                             yPosition - BubbleOffset.Y + hoverVal + 10)),
                         _giftSourceRectangle,
-                        Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None,
-                        1);
-                    break;
-                case true:
-                    var selectedItem = SelectIem(character.Name, bestItems);
-                    if (selectedItem == -1)
-                    {
-                        spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                                xPosition + BubbleOffset.X + 16,
-                                yPosition - BubbleOffset.Y + hoverVal + 16)),
-                            _giftSourceRectangle,
-                            Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None,
-                            1);
-                        break;
+                        Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 1);
                     }
                     else
                     {
+                        // Thought bubble
+                        spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
+                                xPosition + BubbleOffset.X,
+                                yPosition - BubbleOffset.Y + hoverVal)),
+                            new Rectangle(141, 465, 20, 24),
+                            Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0);
+
                         var objectSourceRect = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet,
                             bestItems[selectedItem].item.ParentSheetIndex, 16, 16);
 
                         spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                                xPosition + BubbleOffset.X + 8,
-                                yPosition - BubbleOffset.Y + hoverVal + 8)),
-                            objectSourceRect,
-                            Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None,
-                            1);
-
-                        var smileySourceRect = GetSmileySourceRect(bestItems[selectedItem].taste);
-
-                        spriteBatch.Draw(_emojiTexture2D, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                                xPosition + BubbleOffset.X + 50,
-                                yPosition - BubbleOffset.Y + hoverVal + 60)),
-                            smileySourceRect,
-                            Color.White * 0.75f, 0.0f, Vector2.Zero, 3f, SpriteEffects.None,
-                            2);
-
-                        if (bestItems[selectedItem].item.Quality is 0) return;
-
-                        var qualitySourceRect = GetQualitySourceRect(bestItems[selectedItem].item.Quality);
-
+                            xPosition + BubbleOffset.X + 6,
+                            yPosition - BubbleOffset.Y + hoverVal + 10)),
+                        objectSourceRect,
+                        Color.White * 0.75f, 0.0f, Vector2.Zero, 3f, SpriteEffects.None, 1);
+                    }
+                    break;
+                case true:
+                    if (selectedItem == -1 && _config.DisplayGenericGiftPrompts)
+                    {
+                        // Thought bubble
                         spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                                xPosition + BubbleOffset.X + 3,
-                                yPosition - BubbleOffset.Y + hoverVal + 61)),
-                            qualitySourceRect,
-                            Color.White * 0.75f, 0.0f, Vector2.Zero, 3f, SpriteEffects.None,
-                            2);
+                                xPosition + BubbleOffset.X,
+                                yPosition - BubbleOffset.Y + hoverVal)),
+                            new Rectangle(141, 465, 20, 24),
+                            Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0);
+
+                        spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
+                                xPosition + BubbleOffset.X + 16,
+                                yPosition - BubbleOffset.Y + hoverVal + 16)),
+                            _giftSourceRectangle,
+                            Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 1);
+                        break;
+                    }
+                    else
+                    {
+                        // Thought bubble
+                        spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
+                                xPosition + BubbleOffset.X,
+                                yPosition - BubbleOffset.Y + hoverVal)),
+                            new Rectangle(141, 465, 20, 24),
+                            Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0);
+
+                        try
+                        {
+                            var objectSourceRect = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet,
+                                bestItems[selectedItem].item.ParentSheetIndex, 16, 16);
+
+                            spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2(
+                                    xPosition + BubbleOffset.X + 8,
+                                    yPosition - BubbleOffset.Y + hoverVal + 8)),
+                                objectSourceRect,
+                                Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None,
+                                1);
+
+                            var smileySourceRect = GetSmileySourceRect(bestItems[selectedItem].taste);
+
+                            spriteBatch.Draw(_emojiTexture2D, Game1.GlobalToLocal(Game1.viewport, new Vector2(
+                                    xPosition + BubbleOffset.X + 50,
+                                    yPosition - BubbleOffset.Y + hoverVal + 60)),
+                                smileySourceRect,
+                                Color.White * 0.75f, 0.0f, Vector2.Zero, 3f, SpriteEffects.None,
+                                2);
+
+                            if (bestItems[selectedItem].item.Quality is 0) return;
+
+                            var qualitySourceRect = GetQualitySourceRect(bestItems[selectedItem].item.Quality);
+
+                            spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
+                                    xPosition + BubbleOffset.X + 3,
+                                    yPosition - BubbleOffset.Y + hoverVal + 61)),
+                                qualitySourceRect,
+                                Color.White * 0.75f, 0.0f, Vector2.Zero, 3f, SpriteEffects.None,
+                                2);
+                        }
+                        catch { }
                         break;
                     }
             }
 
             switch (displayTalk)
             {
-                case true when displayGift:
+                case true when displayGift && (_config.DisplayGenericGiftPrompts || selectedItem != -1):
                     spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
                             xPosition + BubbleOffset.X + 22,
                             yPosition - BubbleOffset.Y + 30 + hoverVal)),
@@ -120,6 +162,13 @@ namespace BetterFriendship
                         2);
                     break;
                 case true:
+                    // Thought bubble
+                    spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
+                            xPosition + BubbleOffset.X,
+                            yPosition - BubbleOffset.Y + hoverVal)),
+                        new Rectangle(141, 465, 20, 24),
+                        Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0);
+
                     spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
                             xPosition + BubbleOffset.X + 16,
                             yPosition - BubbleOffset.Y + 16 + hoverVal)),
@@ -146,7 +195,7 @@ namespace BetterFriendship
 
         private int SelectIem(string npcName, IReadOnlyCollection<(Object item, int taste)> bestItems)
         {
-            if (!bestItems.Any() || !_lastCycled.ContainsKey(npcName) || _lastCycled[npcName].item >= bestItems.Count)
+            if (bestItems == null || !bestItems.Any() || !_lastCycled.ContainsKey(npcName) || _lastCycled[npcName].item >= bestItems.Count)
             {
                 _lastCycled[npcName] = (0, 0);
                 return -1;

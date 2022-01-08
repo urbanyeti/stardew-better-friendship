@@ -190,12 +190,29 @@ namespace BetterFriendship
 
             configMenu.AddBoolOption(
                 ModManifest,
+                name: () => "Display Generic Gift Prompts",
+                tooltip: () => "Displays a generic gift indicator if a villager can receive a gift, but nothing in your inventory matches their tastes.",
+                getValue: () => Config.DisplayGenericGiftPrompts,
+                setValue: value => Config.DisplayGenericGiftPrompts = value
+            );
+
+            configMenu.AddBoolOption(
+                ModManifest,
                 name: () => "Ignore Maxed Friendships",
                 tooltip: () =>
                     "Hides suggestions and prompts for relationships that won't decay.",
                 getValue: () => Config.IgnoreMaxedFriendships,
                 setValue: value => Config.IgnoreMaxedFriendships = value
             );
+
+            //configMenu.AddBoolOption(
+            //    ModManifest,
+            //    name: () => "Spouse Override",
+            //    tooltip: () =>
+            //        "Overrides other settings to always display a talk and gift prompt for your spouse and children.",
+            //    getValue: () => Config.SpouseOverride,
+            //    setValue: value => Config.SpouseOverride = value
+            //);
 
             configMenu.AddBoolOption(
                 ModManifest,
