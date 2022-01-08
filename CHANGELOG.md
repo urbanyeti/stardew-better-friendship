@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.0.4 (2022/01/08)
+
+#### Enhancements:
+
+- [#11](https://github.com/urbanyeti/stardew-better-friendship/issues/11) Add specific cycling gift icons to talk / gift combination indicator
+- [#10](https://github.com/urbanyeti/stardew-better-friendship/issues/10) Add config option to disable generic gift prompt
+
+---
+
 ## v1.0.3 (2021/12/09)
 
 #### Bug Fixes:
