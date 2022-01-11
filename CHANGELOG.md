@@ -9,7 +9,7 @@
 #### Bug Fixes:
 
 - [#13](https://github.com/urbanyeti/stardew-better-friendship/issues/13) Speech prompt still displays when npc cannot be spoken to after quest completion 
-- [#12](https://github.com/urbanyeti/stardew-better-friendship/issues/12) Empty thought bubble is not hidden when generic gifts are diabled
+- [#12](https://github.com/urbanyeti/stardew-better-friendship/issues/12) Empty thought bubble is not hidden when generic gifts are disabled
 
 ---
 
