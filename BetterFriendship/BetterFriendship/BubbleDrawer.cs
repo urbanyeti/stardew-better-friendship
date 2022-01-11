@@ -58,10 +58,10 @@ namespace BetterFriendship
                         DrawThoughtBubble(spriteBatch, xPosition, yPosition + hoverVal);
 
                         spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                            xPosition + BubbleOffset.X + 6,
-                            yPosition - BubbleOffset.Y + hoverVal + 10)),
-                        _giftSourceRectangle,
-                        Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 1);
+                                xPosition + BubbleOffset.X + 6,
+                                yPosition - BubbleOffset.Y + hoverVal + 10)),
+                            _giftSourceRectangle,
+                            Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 1);
                     }
                     else
                     {
@@ -71,11 +71,12 @@ namespace BetterFriendship
                             bestItems[selectedItem].item.ParentSheetIndex, 16, 16);
 
                         spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                            xPosition + BubbleOffset.X + 6,
-                            yPosition - BubbleOffset.Y + hoverVal + 10)),
-                        objectSourceRect,
-                        Color.White * 0.75f, 0.0f, Vector2.Zero, 3f, SpriteEffects.None, 1);
+                                xPosition + BubbleOffset.X + 6,
+                                yPosition - BubbleOffset.Y + hoverVal + 10)),
+                            objectSourceRect,
+                            Color.White * 0.75f, 0.0f, Vector2.Zero, 3f, SpriteEffects.None, 1);
                     }
+
                     break;
                 case true:
                     if (selectedItem == -1)
@@ -130,14 +131,18 @@ namespace BetterFriendship
                                 Color.White * 0.75f, 0.0f, Vector2.Zero, 3f, SpriteEffects.None,
                                 2);
                         }
-                        catch { }
+                        catch (Exception)
+                        {
+                        }
+
                         break;
                     }
             }
 
             switch (displayTalk)
             {
-                case true when displayGift && (_config.DisplayGenericGiftPrompts || selectedItem != -1 || character.ShouldOverrideForSpouse(_config)):
+                case true when displayGift && (_config.DisplayGenericGiftPrompts || selectedItem != -1 ||
+                                               character.ShouldOverrideForSpouse(_config)):
                     spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
                             xPosition + BubbleOffset.X + 22,
                             yPosition - BubbleOffset.Y + 30 + hoverVal)),
@@ -174,15 +179,18 @@ namespace BetterFriendship
 
         private int SelectIem(string npcName, IReadOnlyCollection<(Object item, int taste)> bestItems)
         {
-            if (bestItems == null || !bestItems.Any() || !_lastCycled.ContainsKey(npcName) || _lastCycled[npcName].item >= bestItems.Count)
+            if (bestItems == null || !bestItems.Any() || !_lastCycled.ContainsKey(npcName) ||
+                _lastCycled[npcName].item >= bestItems.Count)
             {
                 _lastCycled[npcName] = (0, 0);
                 return -1;
             }
 
-            if (!(Game1.currentGameTime.TotalGameTime.TotalMilliseconds >= _lastCycled[npcName].time + _config.GiftCycleDelay))
+            if (!(Game1.currentGameTime.TotalGameTime.TotalMilliseconds >=
+                  _lastCycled[npcName].time + _config.GiftCycleDelay))
                 return _lastCycled[npcName].item;
-            _lastCycled[npcName] = ((_lastCycled[npcName].item + 1) % bestItems.Count, Game1.currentGameTime.TotalGameTime.TotalMilliseconds);
+            _lastCycled[npcName] = ((_lastCycled[npcName].item + 1) % bestItems.Count,
+                Game1.currentGameTime.TotalGameTime.TotalMilliseconds);
 
             return _lastCycled[npcName].item;
         }

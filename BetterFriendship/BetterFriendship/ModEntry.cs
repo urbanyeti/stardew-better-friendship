@@ -67,7 +67,8 @@ namespace BetterFriendship
 
             var currentLocation = Game1.currentLocation;
 
-            if (!Config.DisplayBubbles || (Config.GiftPreference == "none" && !Config.DisplayTalkPrompts && !Config.SpousePromptsOverride)) return;
+            if (!Config.DisplayBubbles || (Config.GiftPreference == "none" && !Config.DisplayTalkPrompts &&
+                                           !Config.SpousePromptsOverride)) return;
 
             foreach (var npc in currentLocation.characters.Where(npc =>
                          npc.IsTownsfolk() || (npc is Child child && child.daysOld.Value > 14)))
@@ -83,7 +84,8 @@ namespace BetterFriendship
                      !npc.isBirthday(Game1.Date.Season, Game1.Date.DayOfMonth))
                    )
                 {
-                    if ((!Config.DisplayTalkPrompts && !npc.ShouldOverrideForSpouse(Config)) || friendship.TalkedToToday || npc.CurrentDialogue?.Count == 0) continue;
+                    if ((!Config.DisplayTalkPrompts && !npc.ShouldOverrideForSpouse(Config)) ||
+                        friendship.TalkedToToday || (npc is not Child && npc.CurrentDialogue?.Count == 0)) continue;
 
                     BubbleDrawer.DrawBubble(Game1.spriteBatch, npc, null, false, true);
                     continue;
@@ -104,7 +106,8 @@ namespace BetterFriendship
 
                 BubbleDrawer.DrawBubble(Game1.spriteBatch, npc, bestItems,
                     true,
-                    (Config.DisplayTalkPrompts || npc.ShouldOverrideForSpouse(Config)) && !friendship.TalkedToToday && npc.CurrentDialogue?.Count > 0
+                    (Config.DisplayTalkPrompts || npc.ShouldOverrideForSpouse(Config)) && !friendship.TalkedToToday &&
+                    (npc.CurrentDialogue?.Count > 0 || npc is Child)
                 );
             }
         }
@@ -191,7 +194,8 @@ namespace BetterFriendship
             configMenu.AddBoolOption(
                 ModManifest,
                 name: () => "Display Generic Gift Prompts",
-                tooltip: () => "Displays a generic gift indicator if a villager can receive a gift, but nothing in your inventory matches their tastes.",
+                tooltip: () =>
+                    "Displays a generic gift indicator if a villager can receive a gift, but nothing in your inventory matches their tastes.",
                 getValue: () => Config.DisplayGenericGiftPrompts,
                 setValue: value => Config.DisplayGenericGiftPrompts = value
             );
