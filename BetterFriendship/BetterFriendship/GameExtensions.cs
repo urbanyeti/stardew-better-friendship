@@ -35,6 +35,9 @@ namespace BetterFriendship
         public static bool ShouldOverrideForSpouse(this Character character, ModConfig config) =>
             config.SpousePromptsOverride && character.Name == Game1.player.spouse;
 
+        public static bool IsOutOfDialog(this NPC npc) =>
+            npc is not Child && npc.Name != Game1.player.spouse && npc.CurrentDialogue?.Count == 0;
+
         private static IEnumerable<(Object, int)> TakeTopPrioritized(this IEnumerable<(Object item, int taste)> items,
             ModConfig config)
         {

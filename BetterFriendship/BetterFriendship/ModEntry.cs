@@ -85,7 +85,7 @@ namespace BetterFriendship
                    )
                 {
                     if ((!Config.DisplayTalkPrompts && !npc.ShouldOverrideForSpouse(Config)) ||
-                        friendship.TalkedToToday || (npc is not Child && npc.CurrentDialogue?.Count == 0)) continue;
+                        friendship.TalkedToToday || npc.IsOutOfDialog()) continue;
 
                     BubbleDrawer.DrawBubble(Game1.spriteBatch, npc, null, false, true);
                     continue;
@@ -107,7 +107,7 @@ namespace BetterFriendship
                 BubbleDrawer.DrawBubble(Game1.spriteBatch, npc, bestItems,
                     true,
                     (Config.DisplayTalkPrompts || npc.ShouldOverrideForSpouse(Config)) && !friendship.TalkedToToday &&
-                    (npc.CurrentDialogue?.Count > 0 || npc is Child)
+                    !npc.IsOutOfDialog()
                 );
             }
         }
