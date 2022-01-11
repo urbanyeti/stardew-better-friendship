@@ -2,7 +2,7 @@
 
 *Are you tired of constantly having to dig through multiple wiki pages or mod menus every time you want to give a villager a gift? Wouldn't it be easier if there was just a visual indicator of who can receive a gift and who you can talk to? You deserve **Better Friendship**!*
 
-**Update 1.0.4 (2022/01/08): Added config option to disable generic gift prompts and changed the combined talk/gift indicator to cycle through specific gifts**
+**Update 1.0.5 (2022/01/11): Added "always display spouse prompts" override and fixed generic gift prompt config toggle**
 
 ![](https://github.com/urbanyeti/stardew-better-friendship/blob/main/misc/multiple-gift.gif)
 
