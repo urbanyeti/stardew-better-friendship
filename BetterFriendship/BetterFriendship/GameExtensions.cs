@@ -32,6 +32,8 @@ namespace BetterFriendship
                 .ToList();
         }
 
+        public static bool ShouldOverrideForSpouse(this Character character, ModConfig config) => config.SpousePromptsOverride && character.Name == Game1.player.spouse;
+
         private static IEnumerable<(Object, int)> TakeTopPrioritized(this IEnumerable<(Object item, int taste)> items,
             ModConfig config)
         {

@@ -9,7 +9,7 @@ namespace BetterFriendship
         public bool DisplayGenericGiftPrompts { get; set; } = true;
         public int GiftCycleDelay { get; set; } = 2000;
         public bool IgnoreMaxedFriendships { get; set; } = false;
-        public bool SpouseOverride { get; set; } = false;
+        public bool SpousePromptsOverride { get; set; } = false;
         public bool DisplayBubbles { get; set; } = true;
 
         private string _giftPreference = "like";

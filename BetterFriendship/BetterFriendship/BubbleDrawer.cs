@@ -4,7 +4,6 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Object = StardewValley.Object;
 
 namespace BetterFriendship
@@ -51,17 +50,12 @@ namespace BetterFriendship
                 case true when displayTalk:
                     if (selectedItem == -1)
                     {
-                        if (!_config.DisplayGenericGiftPrompts)
+                        if (!_config.DisplayGenericGiftPrompts && !character.ShouldOverrideForSpouse(_config))
                         {
                             break;
                         }
 
-                        // Thought bubble
-                        spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                                xPosition + BubbleOffset.X,
-                                yPosition - BubbleOffset.Y + hoverVal)),
-                            new Rectangle(141, 465, 20, 24),
-                            Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0);
+                        DrawThoughtBubble(spriteBatch, xPosition, yPosition + hoverVal);
 
                         spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
                             xPosition + BubbleOffset.X + 6,
@@ -71,12 +65,7 @@ namespace BetterFriendship
                     }
                     else
                     {
-                        // Thought bubble
-                        spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                                xPosition + BubbleOffset.X,
-                                yPosition - BubbleOffset.Y + hoverVal)),
-                            new Rectangle(141, 465, 20, 24),
-                            Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0);
+                        DrawThoughtBubble(spriteBatch, xPosition, yPosition + hoverVal);
 
                         var objectSourceRect = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet,
                             bestItems[selectedItem].item.ParentSheetIndex, 16, 16);
@@ -89,14 +78,14 @@ namespace BetterFriendship
                     }
                     break;
                 case true:
-                    if (selectedItem == -1 && _config.DisplayGenericGiftPrompts)
+                    if (selectedItem == -1)
                     {
-                        // Thought bubble
-                        spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                                xPosition + BubbleOffset.X,
-                                yPosition - BubbleOffset.Y + hoverVal)),
-                            new Rectangle(141, 465, 20, 24),
-                            Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0);
+                        if (!_config.DisplayGenericGiftPrompts && !character.ShouldOverrideForSpouse(_config))
+                        {
+                            break;
+                        }
+
+                        DrawThoughtBubble(spriteBatch, xPosition, yPosition + hoverVal);
 
                         spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
                                 xPosition + BubbleOffset.X + 16,
@@ -107,12 +96,7 @@ namespace BetterFriendship
                     }
                     else
                     {
-                        // Thought bubble
-                        spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                                xPosition + BubbleOffset.X,
-                                yPosition - BubbleOffset.Y + hoverVal)),
-                            new Rectangle(141, 465, 20, 24),
-                            Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0);
+                        DrawThoughtBubble(spriteBatch, xPosition, yPosition + hoverVal);
 
                         try
                         {
@@ -153,7 +137,7 @@ namespace BetterFriendship
 
             switch (displayTalk)
             {
-                case true when displayGift && (_config.DisplayGenericGiftPrompts || selectedItem != -1):
+                case true when displayGift && (_config.DisplayGenericGiftPrompts || selectedItem != -1 || character.ShouldOverrideForSpouse(_config)):
                     spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
                             xPosition + BubbleOffset.X + 22,
                             yPosition - BubbleOffset.Y + 30 + hoverVal)),
@@ -162,12 +146,7 @@ namespace BetterFriendship
                         2);
                     break;
                 case true:
-                    // Thought bubble
-                    spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                            xPosition + BubbleOffset.X,
-                            yPosition - BubbleOffset.Y + hoverVal)),
-                        new Rectangle(141, 465, 20, 24),
-                        Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0);
+                    DrawThoughtBubble(spriteBatch, xPosition, yPosition + hoverVal);
 
                     spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
                             xPosition + BubbleOffset.X + 16,
@@ -206,6 +185,15 @@ namespace BetterFriendship
             _lastCycled[npcName] = ((_lastCycled[npcName].item + 1) % bestItems.Count, Game1.currentGameTime.TotalGameTime.TotalMilliseconds);
 
             return _lastCycled[npcName].item;
+        }
+
+        private void DrawThoughtBubble(SpriteBatch spriteBatch, float xPosition, float yPosition)
+        {
+            spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
+                    xPosition + BubbleOffset.X,
+                    yPosition - BubbleOffset.Y)),
+                new Rectangle(141, 465, 20, 24),
+                Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0);
         }
     }
 }

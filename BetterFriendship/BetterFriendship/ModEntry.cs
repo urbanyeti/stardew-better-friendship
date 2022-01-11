@@ -67,7 +67,7 @@ namespace BetterFriendship
 
             var currentLocation = Game1.currentLocation;
 
-            if (!Config.DisplayBubbles || (Config.GiftPreference == "none" && !Config.DisplayTalkPrompts)) return;
+            if (!Config.DisplayBubbles || (Config.GiftPreference == "none" && !Config.DisplayTalkPrompts && !Config.SpousePromptsOverride)) return;
 
             foreach (var npc in currentLocation.characters.Where(npc =>
                          npc.IsTownsfolk() || (npc is Child child && child.daysOld.Value > 14)))
@@ -76,14 +76,14 @@ namespace BetterFriendship
 
                 if (Config.IgnoreMaxedFriendships && !FriendshipCanDecay(npc, friendship)) continue;
 
-                if (Config.GiftPreference == "none" ||
+                if ((Config.GiftPreference == "none" && !npc.ShouldOverrideForSpouse(Config)) ||
                     npc is Child ||
                     friendship.GiftsToday != 0 ||
                     (friendship.GiftsThisWeek >= 2 && Game1.player.spouse != npc.Name &&
                      !npc.isBirthday(Game1.Date.Season, Game1.Date.DayOfMonth))
                    )
                 {
-                    if (!Config.DisplayTalkPrompts || friendship.TalkedToToday) continue;
+                    if ((!Config.DisplayTalkPrompts && !npc.ShouldOverrideForSpouse(Config)) || friendship.TalkedToToday || npc.CurrentDialogue?.Count == 0) continue;
 
                     BubbleDrawer.DrawBubble(Game1.spriteBatch, npc, null, false, true);
                     continue;
@@ -104,7 +104,7 @@ namespace BetterFriendship
 
                 BubbleDrawer.DrawBubble(Game1.spriteBatch, npc, bestItems,
                     true,
-                    Config.DisplayTalkPrompts && !friendship.TalkedToToday
+                    (Config.DisplayTalkPrompts || npc.ShouldOverrideForSpouse(Config)) && !friendship.TalkedToToday && npc.CurrentDialogue?.Count > 0
                 );
             }
         }
@@ -205,14 +205,14 @@ namespace BetterFriendship
                 setValue: value => Config.IgnoreMaxedFriendships = value
             );
 
-            //configMenu.AddBoolOption(
-            //    ModManifest,
-            //    name: () => "Spouse Override",
-            //    tooltip: () =>
-            //        "Overrides other settings to always display a talk and gift prompt for your spouse and children.",
-            //    getValue: () => Config.SpouseOverride,
-            //    setValue: value => Config.SpouseOverride = value
-            //);
+            configMenu.AddBoolOption(
+                ModManifest,
+                name: () => "Always Display Spouse Prompts",
+                tooltip: () =>
+                    "Overrides other settings to always display gift and talk prompts for your spouse.",
+                getValue: () => Config.SpousePromptsOverride,
+                setValue: value => Config.SpousePromptsOverride = value
+            );
 
             configMenu.AddBoolOption(
                 ModManifest,

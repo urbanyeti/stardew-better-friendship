@@ -4,8 +4,8 @@
   "GiftCycleCount": 5,
   "GiftCycleDelay": 150000,
   "IgnoreMaxedFriendships": false,
-  "DisplayGenericGiftPrompts":  true,
+  "DisplayGenericGiftPrompts": true,
   "OnlyHighestQuality": false,
-  "SpouseOverride": true,
+  "SpousePromptsOverride": false,
   "DisplayBubbles": true
 }
