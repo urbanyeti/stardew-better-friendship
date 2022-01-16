@@ -99,41 +99,35 @@ namespace BetterFriendship
                     {
                         DrawThoughtBubble(spriteBatch, xPosition, yPosition + hoverVal);
 
-                        try
-                        {
-                            var objectSourceRect = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet,
+                        var objectSourceRect = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet,
                                 bestItems[selectedItem].item.ParentSheetIndex, 16, 16);
 
-                            spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                                    xPosition + BubbleOffset.X + 8,
-                                    yPosition - BubbleOffset.Y + hoverVal + 8)),
-                                objectSourceRect,
-                                Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None,
-                                1);
+                        spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2(
+                                xPosition + BubbleOffset.X + 8,
+                                yPosition - BubbleOffset.Y + hoverVal + 8)),
+                            objectSourceRect,
+                            Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None,
+                            1);
 
-                            var smileySourceRect = GetSmileySourceRect(bestItems[selectedItem].taste);
+                        var smileySourceRect = GetSmileySourceRect(bestItems[selectedItem].taste);
 
-                            spriteBatch.Draw(_emojiTexture2D, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                                    xPosition + BubbleOffset.X + 50,
-                                    yPosition - BubbleOffset.Y + hoverVal + 60)),
-                                smileySourceRect,
-                                Color.White * 0.75f, 0.0f, Vector2.Zero, 3f, SpriteEffects.None,
-                                2);
+                        spriteBatch.Draw(_emojiTexture2D, Game1.GlobalToLocal(Game1.viewport, new Vector2(
+                                xPosition + BubbleOffset.X + 50,
+                                yPosition - BubbleOffset.Y + hoverVal + 60)),
+                            smileySourceRect,
+                            Color.White * 0.75f, 0.0f, Vector2.Zero, 3f, SpriteEffects.None,
+                            2);
 
-                            if (bestItems[selectedItem].item.Quality is 0) return;
+                        if (bestItems[selectedItem].item.Quality is 0) return;
 
-                            var qualitySourceRect = GetQualitySourceRect(bestItems[selectedItem].item.Quality);
+                        var qualitySourceRect = GetQualitySourceRect(bestItems[selectedItem].item.Quality);
 
-                            spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                                    xPosition + BubbleOffset.X + 3,
-                                    yPosition - BubbleOffset.Y + hoverVal + 61)),
-                                qualitySourceRect,
-                                Color.White * 0.75f, 0.0f, Vector2.Zero, 3f, SpriteEffects.None,
-                                2);
-                        }
-                        catch (Exception)
-                        {
-                        }
+                        spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
+                                xPosition + BubbleOffset.X + 3,
+                                yPosition - BubbleOffset.Y + hoverVal + 61)),
+                            qualitySourceRect,
+                            Color.White * 0.75f, 0.0f, Vector2.Zero, 3f, SpriteEffects.None,
+                            2);
 
                         break;
                     }

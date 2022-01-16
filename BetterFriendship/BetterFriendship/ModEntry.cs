@@ -8,6 +8,7 @@ using StardewValley.Characters;
 using Object = StardewValley.Object;
 using System.Runtime.Caching;
 using System.ComponentModel;
+using Microsoft.Xna.Framework;
 
 namespace BetterFriendship
 {
@@ -87,28 +88,29 @@ namespace BetterFriendship
                     if ((!Config.DisplayTalkPrompts && !npc.ShouldOverrideForSpouse(Config)) ||
                         friendship.TalkedToToday || npc.IsOutOfDialog()) continue;
 
-                    BubbleDrawer.DrawBubble(Game1.spriteBatch, npc, null, false, true);
+                    DrawBubbleSafely(npc, null, false, true);
+
                     continue;
                 }
 
                 List<(Object, int)> bestItems;
 
-                if (_cache.Contains(npc.Name))
+                if (_cache.Contains(GetCacheKey(npc)))
                 {
-                    bestItems = _cache.Get(npc.Name) as List<(Object, int)>;
+                    bestItems = _cache.Get(GetCacheKey(npc)) as List<(Object, int)>;
                 }
                 else
                 {
-                    bestItems = npc.GetTopGiftSuggestions(Config);
-                    _cache.Add(new CacheItem(npc.Name, bestItems),
+                    bestItems = GetGiftSuggestionsSafely(npc);
+                    _cache.Add(new CacheItem(GetCacheKey(npc), bestItems),
                         new CacheItemPolicy() { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(5) });
                 }
 
-                BubbleDrawer.DrawBubble(Game1.spriteBatch, npc, bestItems,
-                    true,
-                    (Config.DisplayTalkPrompts || npc.ShouldOverrideForSpouse(Config)) && !friendship.TalkedToToday &&
-                    !npc.IsOutOfDialog()
-                );
+                var displayTalk = (Config.DisplayTalkPrompts || npc.ShouldOverrideForSpouse(Config)) &&
+                              !friendship.TalkedToToday &&
+                              !npc.IsOutOfDialog();
+
+                DrawBubbleSafely(npc, bestItems, true, displayTalk);
             }
         }
 
@@ -121,6 +123,37 @@ namespace BetterFriendship
             return (!isPreBouquet && friendship.Points < 2500) || (isPreBouquet && friendship.Points < 2000);
         }
 
+        private static string GetCacheKey(Character character) => $"{Game1.player.Name}:{character.Name}";
+
+        private List<(Object, int)> GetGiftSuggestionsSafely(NPC npc)
+        {
+            try
+            {
+                return npc.GetGiftSuggestions(Config);
+            }
+            catch (NullReferenceException ex)
+            {
+                Monitor.VerboseLog(
+                    $"Error with GetTopGiftSuggestion for {npc.Name}. Exception: {ex.Message}");
+                return new List<(Object, int)>();
+            }
+        }
+
+        private void DrawBubbleSafely(Character character, List<(Object, int)> bestItems, bool displayGift, bool displayTalk)
+        {
+            try
+            {
+                BubbleDrawer.DrawBubble(Game1.spriteBatch, character, bestItems,
+                    displayGift,
+                    displayTalk
+                );
+            }
+            catch (Exception ex)
+            {
+                Monitor.VerboseLog(
+                    $"Error with DrawBubble for {character.Name} | bestItems: {bestItems} | displayGift: {displayGift} | displayTalk: {displayTalk}. Exception: {ex.Message}");
+            }
+        }
 
         private void OnConfigChanged(object sender, PropertyChangedEventArgs e)
         {

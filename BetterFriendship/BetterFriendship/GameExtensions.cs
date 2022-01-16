@@ -13,10 +13,11 @@ namespace BetterFriendship
                    && npc is not Horse
                    && npc is not Junimo
                    && npc is not JunimoHarvester
-                   && npc is not TrashBear;
+                   && npc is not TrashBear
+                   && npc.Name != "Henchman";
         }
 
-        public static List<(Object, int)> GetTopGiftSuggestions(this NPC npc, ModConfig config)
+        public static List<(Object, int)> GetGiftSuggestions(this NPC npc, ModConfig config)
         {
             return
                 Game1.player.Items.Where(x => x is Object)
