@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.0.6 (2022/01/15)
+
+#### Enhancements:
+
+- [#18](https://github.com/urbanyeti/stardew-better-friendship/issues/18) Improve overall error handling
+- [#17](https://github.com/urbanyeti/stardew-better-friendship/issues/17) Improve splitscreen support
+
+#### Bug Fixes:
+
+- [#16](https://github.com/urbanyeti/stardew-better-friendship/issues/16) Unknown error related to Marigold the service dog in Diverse Stardew Valley mod
+- [#15](https://github.com/urbanyeti/stardew-better-friendship/issues/15) Errors in logs related to henchman in witch's swamp
+
+---
+
 ## v1.0.5 (2022/01/11)
 
 #### Enhancements:
