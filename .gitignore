@@ -351,9 +351,3 @@ MigrationBackup/
 
 # Intelij Idea files
 *.idea
-
-# C# project file
-*.csproj
-
-# gitignore
-*.gitignore
