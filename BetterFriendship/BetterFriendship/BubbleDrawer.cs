@@ -10,7 +10,7 @@ namespace BetterFriendship
 {
     public class BubbleDrawer
     {
-        public Vector2 BubbleOffset { get; private set; }
+        private Vector2 BubbleOffset { get; set; }
         private readonly ModConfig _config;
         private readonly Dictionary<string, (int item, double time)> _lastCycled = new();
         private readonly Rectangle _giftSourceRectangle = new(167, 175, 12, 11);
