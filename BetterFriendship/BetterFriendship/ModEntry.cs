@@ -8,7 +8,7 @@ using StardewValley.Characters;
 using Object = StardewValley.Object;
 using System.Runtime.Caching;
 using System.ComponentModel;
-using Microsoft.Xna.Framework;
+using GenericModConfigMenu;
 
 namespace BetterFriendship
 {
@@ -200,6 +200,7 @@ namespace BetterFriendship
                     _ => "UNKNOWN"
                 }
             );
+
 
             configMenu.AddNumberOption(
                 ModManifest,
