@@ -82,7 +82,7 @@ namespace BetterFriendship
                     npc is Child ||
                     friendship.GiftsToday != 0 ||
                     (friendship.GiftsThisWeek >= 2 && Game1.player.spouse != npc.Name &&
-                     !npc.isBirthday(Game1.Date.Season, Game1.Date.DayOfMonth))
+                     !npc.isBirthday())
                    )
                 {
                     if ((!Config.DisplayTalkPrompts && !npc.ShouldOverrideForSpouse(Config)) ||
