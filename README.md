@@ -1,6 +1,6 @@
 # Ditch the menus! See real-time gift suggestions based on the items in your inventory!
 
-*Are you tired of constantly having to dig through multiple wiki pages or mod menus every time you want to give a villager a gift? Wouldn't it be easier if there was just a visual indicator of who can receive a gift and who you can talk to? You deserve **Better Friendship**!*
+*Are you tired of constantly having to dig through multiple wiki pages or mod menus every time you want to give a villager a gift? Wouldn't it be easier if there was just a visual indicator of who can receive a gift and who you can talk to? You deserve [**Better Friendship**](https://www.nexusmods.com/stardewvalley/mods/10287)!*
 
 ![](https://github.com/urbanyeti/stardew-better-friendship/blob/main/misc/multiple-gift.gif)
 
@@ -22,7 +22,7 @@
 3. (optional) Install [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098)﻿ for easy config setting management.
 4. Run the game using SMAPI.
 
-## Contributors
+## Other Contributors
 - [Profitrollgame](https://github.com/profitrollgame)
 - [Admonstrator](https://github.com/Admonstrator]Admonstrator)
 
