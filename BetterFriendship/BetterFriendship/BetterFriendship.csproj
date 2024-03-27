@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <GamePath>/home/salt/Games/gog/stardew-valley/game/</GamePath>
   </PropertyGroup>
 
   <ItemGroup>
