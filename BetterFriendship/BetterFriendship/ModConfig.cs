@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace BetterFriendshipUpdated
+namespace BetterFriendship
 {
     internal class ModConfig : INotifyPropertyChanged
     {

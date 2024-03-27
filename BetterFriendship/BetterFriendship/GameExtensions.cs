@@ -3,7 +3,7 @@ using System.Linq;
 using StardewValley;
 using StardewValley.Characters;
 
-namespace BetterFriendshipUpdated
+namespace BetterFriendship
 {
     internal static class GameExtensions
     {

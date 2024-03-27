@@ -5,7 +5,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 
-namespace GenericModConfigMenu
+namespace BetterFriendship
 {
     /// <summary>The API which lets other mods add a config UI through Generic Mod Config Menu.</summary>
     public interface IGenericModConfigMenuApi
@@ -23,8 +23,7 @@ namespace GenericModConfigMenu
         /// <param name="titleScreenOnly">Whether the options can only be edited from the title screen.</param>
         /// <remarks>Each mod can only be registered once, unless it's deleted via <see cref="Unregister"/> before calling this again.</remarks>
         void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
-
-
+        
         /****
         ** Basic options
         ****/
