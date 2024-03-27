@@ -32,5 +32,5 @@
     "config.option.enable_bubbles.description": "Allows floating bubbles to be displayed over villagers. Warning: Turning this off will hide ALL floating bubbles enabled by this mod (talk prompts, gift suggestions, etc.)",
     
     "config.option.bubble_display_range.name": "Display Range",
-    "config.option.bubble_display_range.description": "Determines the range around the player to display bubbles over villagers."
+    "config.option.bubble_display_range.description": "Range at which bubble are displayed."
 }
