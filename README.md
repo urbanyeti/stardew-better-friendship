@@ -25,6 +25,8 @@
 ## Other Contributors
 - [Profitrollgame](https://github.com/profitrollgame)
 - [Admonstrator](https://github.com/Admonstrator]Admonstrator)
+- [SaltSouls](https://github.com/SaltSouls)
+- [mitekano23](https://github.com/mitekano23)
 
 ## Special Thanks
 - [NormanPCN](https://www.nexusmods.com/stardewvalley/users/124597098) has been incredibly helpful in providing background for some of the game mechanics and helping me test and debug!
