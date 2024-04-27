@@ -29,7 +29,7 @@
     "config.option.only_highest_quality.description": "所持しているアイテムの最高品質のみ表示。例：ゴールドとシルバー品質のアイテムを持っている場合、ゴールド品質のみが提案される。",
 
     "config.option.enable_bubbles.name": "[!]吹き出しを有効化",
-    "config.option.enable_bubbles.description": "吹き出しを村人の上に表示できるようにする。警告：これをオフにすると、このMODで有効になっているすべての吹き出しが非表示になります(会話やプレゼントの提案など)。"
+    "config.option.enable_bubbles.description": "吹き出しを村人の上に表示できるようにする。警告：これをオフにすると、このMODで有効になっているすべての吹き出しが非表示になります(会話やプレゼントの提案など)。",
 
     "config.option.bubble_display_range.name": "表示範囲",
     "config.option.bubble_display_range.description": "吹き出しが表示される範囲。"
