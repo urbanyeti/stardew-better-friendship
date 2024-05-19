@@ -1,0 +1,36 @@
+{
+    // Config settings
+    "config.option.prompt_speak.name": "Indicateur de discussion",
+    "config.option.prompt_speak.description": "Affiche un indicateur afin de savoir si vous avez parlé à un villageois aujourd’hui.",
+
+    "config.option.gift_preference.name": "Préférence de suggestion pour\nles cadeaux",
+    "config.option.gift_preference.description": "Le plus bas niveau de correspondance souhaité pour les suggestions de cadeaux. Les suggestion de cadeaux proviennent des cadeaux actuellement dans votre inventaire, triés en fonction du receveur par la préférence, la qualité d’objet et le prix le moins élevé.",
+    "config.option.gift_preference.value.love": "Montrer uniquement cadeaux adorés",
+    "config.option.gift_preference.value.like": "Montrer cadeaux aimés et adorés",
+    "config.option.gift_preference.value.neutral": "Montrer cadeaux neutres et au-dessus",
+    "config.option.gift_preference.value.none": "Cacher toutes les suggestions",
+
+    "config.option.gift_max_count.name": "Maximum de cadeaux à montrer",
+    "config.option.gift_max_count.description": "Le nombre maximum d’objets à suggérer.",
+
+    "config.option.gift_display_time.name": "Temps d’affichage cadeaux (ms)",
+    "config.option.gift_display_time.description": "Le temps d’affichage pour chaque cadeau suggéré en millisecondes.",
+
+    "config.option.gift_generic_prompts.name": "Indicateurs de cadeaux génériques",
+    "config.option.gift_generic_prompts.description": "Affiche du indicateur de cadeau générique si le villageois peut recevoir un cadeau mais qu’aucun objet dans votre inventaire correspond à ses goûts.",
+
+    "config.option.ignore_maxed.name": "Ignorer les amitiés maximisées",
+    "config.option.ignore_maxed.description": "Cacher les suggestions et les indicateurs pour les relations qui ne vont pas se détériorer.",
+
+    "config.option.spouse_prompts.name": "Toujours afficher pour l’époux(se)",
+    "config.option.spouse_prompts.description": "Outrepasse tous les autres paramétrages pour toujours afficher les cadeaux et indicateurs de discussion pour votre époux(se).",
+
+    "config.option.only_highest_quality.name": "Montrer uniquement la qualité\nla plus haute possible",
+    "config.option.only_highest_quality.description": "Montrer uniquement la version de la plus haute qualité possible des objets disponibles. Par exemple, si vous avez à la fois un piment or et un autre argent, seulement le piment or sera suggéré.",
+
+    "config.option.enable_bubbles.name": "[!] Activer les bulles de suggestions",
+    "config.option.enable_bubbles.description": "Autorise les bulles flottantes affichées au-dessus des villageois.\nATTENTION : désactiver ceci cachera TOUTES les bulles flottantes\nautorisées par ce mod (indicateur de discussion, suggestion de cadeaux, etc.)",
+    
+    "config.option.bubble_display_range.name": "Portée pour l’affichage",
+    "config.option.bubble_display_range.description": "Portée à partir de laquelle les bulles seront affichées."
+}
