@@ -28,6 +28,7 @@
 - [SaltSouls](https://github.com/SaltSouls)
 - [mitekano23](https://github.com/mitekano23)
 - [MaximillianRW](https://github.com/MaximillianRW)
+- [CaranudLapin](https://github.com/CaranudLapin)
 
 ## Special Thanks
 - [NormanPCN](https://www.nexusmods.com/stardewvalley/users/124597098) has been incredibly helpful in providing background for some of the game mechanics and helping me test and debug!
