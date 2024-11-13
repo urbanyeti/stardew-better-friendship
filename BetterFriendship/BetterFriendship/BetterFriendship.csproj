@@ -9,4 +9,15 @@
     <PackageReference Include="System.Runtime.Caching" Version="8.0.0" />
   </ItemGroup>
 
+	<PropertyGroup>
+		<BundleExtraAssemblies>System</BundleExtraAssemblies>
+		<IgnoreModFilePatterns>
+			^Microsoft.(?!.*(Toolkit.Diagnostics.dll)), <!-- Everyone but MS.Toolkit.Diagnostics-->
+			.*[/\\]Microsoft.*, <!-- CodeDiagnostics in a bunch of languages?-->
+			^runtimes[/\\].*,
+			^JetBrains,<!-- Should never be bundled.-->
+			^Skia <!-- Skiasharp is included with the game-->
+		</IgnoreModFilePatterns>
+	</PropertyGroup>
+
 </Project>
