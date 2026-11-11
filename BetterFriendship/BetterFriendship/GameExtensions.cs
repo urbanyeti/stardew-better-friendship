@@ -29,6 +29,8 @@ namespace BetterFriendship
                         "neutral" => x.taste is not 4 or 6,
                         _ => false
                     })
+                    .Where(x => !config.OnlyKnownGiftTastes ||
+                                Game1.player.hasGiftTasteBeenRevealed(npc, x.item.ItemId))
                     .TakeTopPrioritized(config)
                     .ToList();
         }

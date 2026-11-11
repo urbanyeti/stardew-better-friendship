@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.2.0 (2026/11/10)
+
+#### Enhancements:
+
+- Add config option to change the size of the bubbles
+- Add fade in/out to the bubbles (configurable duration)
+- Add "Only Suggest Known Tastes" immersion option to only suggest gifts whose taste has already been discovered
+- "Hide all suggestions" now still shows the generic gift reminder when "Display Generic Gift Prompts" is enabled
+
+#### Bug Fixes:
+
+- Resetting the config to defaults no longer leaves bubbles using the old settings until restart
+
+---
+
 ## v1.0.6 (2022/01/15)
 
 #### Enhancements:

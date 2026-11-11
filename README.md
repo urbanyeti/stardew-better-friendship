@@ -14,6 +14,8 @@
   - Customize the number of suggestions to cycle through and time in between cycling
   - Ability to disable prompts when friendships are maxed and can't decay
   - Preference to only display the highest quality available for each item
+  - Immersion options: only suggest gifts whose taste you've already discovered, or show a gift reminder without any specific suggestions
+  - Adjust the bubble size and fade in/out time
 
 ## Install 
 **Compatible with Stardew Valley 1.6+ on Linux, Mac, and Windows** [Requires SMAPI 4.0.0 or later.](https://github.com/Pathoschild/SMAPI/releases)

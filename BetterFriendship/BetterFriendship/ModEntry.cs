@@ -64,12 +64,28 @@ namespace BetterFriendship
 
         private void OnRenderedWorld(object sender, RenderedWorldEventArgs e)
         {
-            if (!Context.IsWorldReady || Game1.eventUp) return;
+            if (!Context.IsWorldReady || Game1.eventUp || !Config.DisplayBubbles ||
+                (Config.GiftPreference == "none" && !Config.DisplayGenericGiftPrompts &&
+                 !Config.DisplayTalkPrompts && !Config.SpousePromptsOverride))
+            {
+                BubbleDrawer.Reset();
+                return;
+            }
 
-            var currentLocation = Game1.currentLocation;
+            DrawBubbles(Game1.currentLocation);
 
-            if (!Config.DisplayBubbles || (Config.GiftPreference == "none" && !Config.DisplayTalkPrompts &&
-                                           !Config.SpousePromptsOverride)) return;
+            try
+            {
+                BubbleDrawer.DrawFadingBubbles(Game1.spriteBatch);
+            }
+            catch (Exception ex)
+            {
+                Monitor.VerboseLog($"Error with DrawFadingBubbles. Exception: {ex.Message}");
+            }
+        }
+
+        private void DrawBubbles(GameLocation currentLocation)
+        {
 
             foreach (var npc in currentLocation.characters.Where(npc =>
                          npc.IsTownsfolk() || (npc is Child child && child.daysOld.Value > 14)))
@@ -88,7 +104,9 @@ namespace BetterFriendship
 
                 if (Config.IgnoreMaxedFriendships && !FriendshipCanDecay(npc, friendship)) continue;
 
-                if ((Config.GiftPreference == "none" && !npc.ShouldOverrideForSpouse(Config)) ||
+                // With suggestions hidden, the generic gift reminder still shows if it's enabled
+                if ((Config.GiftPreference == "none" && !Config.DisplayGenericGiftPrompts &&
+                     !npc.ShouldOverrideForSpouse(Config)) ||
                     npc is Child ||
                     friendship.GiftsToday != 0 ||
                     (friendship.GiftsThisWeek >= 2 && Game1.player.spouse != npc.Name &&
@@ -168,7 +186,18 @@ namespace BetterFriendship
         private void OnConfigChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName is not (nameof(ModConfig.GiftPreference) or nameof(ModConfig.GiftCycleCount)
-                or nameof(ModConfig.OnlyHighestQuality))) return;
+                or nameof(ModConfig.OnlyHighestQuality) or nameof(ModConfig.OnlyKnownGiftTastes))) return;
+
+            foreach (var key in _cache.Select(x => x.Key)) _cache.Remove(key);
+        }
+
+        /// <summary>Resets the config to its defaults, keeping everything that depends on it pointed at the new instance.</summary>
+        private void ResetConfig()
+        {
+            Config.PropertyChanged -= OnConfigChanged;
+            Config = new ModConfig();
+            Config.PropertyChanged += OnConfigChanged;
+            BubbleDrawer = new BubbleDrawer(Config);
 
             foreach (var key in _cache.Select(x => x.Key)) _cache.Remove(key);
         }
@@ -182,7 +211,7 @@ namespace BetterFriendship
         {
             configMenu.Register(
                 ModManifest,
-                () => Config = new ModConfig(),
+                ResetConfig,
                 () => Helper.WriteConfig(Config)
             );
 
@@ -211,6 +240,13 @@ namespace BetterFriendship
                 }
             );
 
+            configMenu.AddBoolOption(
+                ModManifest,
+                name: () => this.Helper.Translation.Get("config.option.only_known_tastes.name"),
+                tooltip: () => this.Helper.Translation.Get("config.option.only_known_tastes.description"),
+                getValue: () => Config.OnlyKnownGiftTastes,
+                setValue: value => Config.OnlyKnownGiftTastes = value
+            );
 
             configMenu.AddNumberOption(
                 ModManifest,
@@ -283,6 +319,29 @@ namespace BetterFriendship
                 max: 50, // should be enough to cover entire visible area on normal zoom
                 getValue: () => Config.BubbleDisplayRange,
                 setValue: value => Config.BubbleDisplayRange = value
+            );
+
+            configMenu.AddNumberOption(
+                ModManifest,
+                name: () => this.Helper.Translation.Get("config.option.bubble_scale.name"),
+                tooltip: () => this.Helper.Translation.Get("config.option.bubble_scale.description"),
+                interval: 0.1f,
+                min: 0.5f,
+                max: 2f,
+                formatValue: value => $"{Math.Round(value * 100)}%",
+                getValue: () => Config.BubbleScale,
+                setValue: value => Config.BubbleScale = value
+            );
+
+            configMenu.AddNumberOption(
+                ModManifest,
+                name: () => this.Helper.Translation.Get("config.option.bubble_fade_duration.name"),
+                tooltip: () => this.Helper.Translation.Get("config.option.bubble_fade_duration.description"),
+                interval: 10,
+                min: 0,
+                max: 1000,
+                getValue: () => Config.BubbleFadeDuration,
+                setValue: value => Config.BubbleFadeDuration = value
             );
         }
     }

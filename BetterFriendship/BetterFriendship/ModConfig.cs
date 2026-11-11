@@ -11,6 +11,8 @@ namespace BetterFriendship
         public bool IgnoreMaxedFriendships { get; set; }
         public bool SpousePromptsOverride { get; set; }
         public bool DisplayBubbles { get; set; } = true;
+        public float BubbleScale { get; set; } = 1f;
+        public int BubbleFadeDuration { get; set; } = 200;
 
         private int _bubbleDisplayRange = 12;
         
@@ -54,6 +56,18 @@ namespace BetterFriendship
             set
             {
                 _onlyHighestQuality = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _onlyKnownGiftTastes;
+
+        public bool OnlyKnownGiftTastes
+        {
+            get => _onlyKnownGiftTastes;
+            set
+            {
+                _onlyKnownGiftTastes = value;
                 OnPropertyChanged();
             }
         }

@@ -10,6 +10,9 @@
     "config.option.gift_preference.value.neutral": "Show neutral gifts & above",
     "config.option.gift_preference.value.none": "Hide all suggestions",
 
+    "config.option.only_known_tastes.name": "Only Suggest Known Tastes",
+    "config.option.only_known_tastes.description": "Immersion option: only suggests gifts whose taste you've already discovered for that villager, e.g. by gifting the item to them before.",
+
     "config.option.gift_max_count.name": "Max Gifts to Show",
     "config.option.gift_max_count.description": "The maximum number of gift suggestions to cycle through.",
 
@@ -17,7 +20,7 @@
     "config.option.gift_display_time.description": "The time to display each suggested gift in milliseconds.",
 
     "config.option.gift_generic_prompts.name": "Display Generic Gift Prompts",
-    "config.option.gift_generic_prompts.description": "Displays a generic gift indicator if a villager can receive a gift, but nothing in your inventory matches their tastes.",
+    "config.option.gift_generic_prompts.description": "Displays a generic gift indicator if a villager can receive a gift, but nothing in your inventory matches their tastes or gift suggestions are hidden.",
 
     "config.option.ignore_maxed.name": "Ignore Maxed Friendships",
     "config.option.ignore_maxed.description": "Hides suggestions and prompts for relationships that won't decay.",
@@ -32,5 +35,11 @@
     "config.option.enable_bubbles.description": "Allows floating bubbles to be displayed over villagers. Warning: Turning this off will hide ALL floating bubbles enabled by this mod (talk prompts, gift suggestions, etc.)",
     
     "config.option.bubble_display_range.name": "Display Range",
-    "config.option.bubble_display_range.description": "Range at which bubble are displayed."
+    "config.option.bubble_display_range.description": "Range at which bubble are displayed.",
+
+    "config.option.bubble_scale.name": "Bubble Size",
+    "config.option.bubble_scale.description": "The size of the bubbles displayed over villagers.",
+
+    "config.option.bubble_fade_duration.name": "Bubble Fade Time (ms)",
+    "config.option.bubble_fade_duration.description": "How long bubbles take to fade in and out, in milliseconds. Set to 0 to disable fading."
 }

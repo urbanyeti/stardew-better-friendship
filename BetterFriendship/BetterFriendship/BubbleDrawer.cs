@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,36 @@ namespace BetterFriendship
 {
     public class BubbleDrawer
     {
+        private const float BaseOpacity = 0.75f;
+
+        // The bubble sprite is 20x24 drawn at 4x. Scaling is anchored to its bottom-center
+        // so a resized bubble stays put above the villager's head.
+        private static readonly Vector2 BubbleAnchor = new(40, 96);
+
         private Vector2 BubbleOffset { get; set; }
         private readonly ModConfig _config;
         private readonly Dictionary<string, (int item, double time)> _lastCycled = new();
+        private readonly Rectangle _bubbleSourceRectangle = new(141, 465, 20, 24);
         private readonly Rectangle _giftSourceRectangle = new(167, 175, 12, 11);
         private readonly Rectangle _talkSourceRectangle = new(181, 175, 12, 11);
         private readonly Texture2D _emojiTexture2D;
+        private readonly PerScreen<ScreenState> _screenState = new(() => new ScreenState());
+
+        private sealed class BubbleState
+        {
+            public Character Character;
+            public List<(Object item, int taste)> BestItems;
+            public bool DisplayGift;
+            public bool DisplayTalk;
+            public float Alpha;
+            public int LastRequestedFrame;
+        }
+
+        private sealed class ScreenState
+        {
+            public readonly Dictionary<string, BubbleState> Bubbles = new();
+            public int Frame;
+        }
 
         internal BubbleDrawer(ModConfig config)
         {
@@ -29,6 +54,7 @@ namespace BetterFriendship
             BubbleOffset += offset;
         }
 
+        /// <summary>Draws (and fades in) the bubble for a character that should currently display one.</summary>
         public void DrawBubble(SpriteBatch spriteBatch, Character character, List<(Object item, int taste)> bestItems,
             bool displayGift, bool displayTalk)
         {
@@ -37,121 +63,132 @@ namespace BetterFriendship
                 return;
             }
 
-            character.Position.Deconstruct(out var xPosition, out var yPosition);
+            var screen = _screenState.Value;
+
+            if (!screen.Bubbles.TryGetValue(character.Name, out var bubble))
+            {
+                screen.Bubbles[character.Name] = bubble = new BubbleState();
+            }
+
+            bubble.Character = character;
+            bubble.BestItems = bestItems;
+            bubble.DisplayGift = displayGift;
+            bubble.DisplayTalk = displayTalk;
+            bubble.LastRequestedFrame = screen.Frame;
+            bubble.Alpha = Math.Min(1f, bubble.Alpha + GetFadeStep());
+
+            Draw(spriteBatch, bubble);
+        }
+
+        /// <summary>
+        ///     Fades out the bubbles that were not requested via <see cref="DrawBubble" /> this frame.
+        ///     Must be called once per frame after all bubbles have been drawn.
+        /// </summary>
+        public void DrawFadingBubbles(SpriteBatch spriteBatch)
+        {
+            var screen = _screenState.Value;
+            var frame = screen.Frame++;
+            var fadeStep = GetFadeStep();
+
+            foreach (var (name, bubble) in screen.Bubbles.Where(x => x.Value.LastRequestedFrame != frame).ToList())
+            {
+                bubble.Alpha -= fadeStep;
+
+                if (bubble.Alpha <= 0f || bubble.Character.currentLocation != Game1.currentLocation)
+                {
+                    screen.Bubbles.Remove(name);
+                    continue;
+                }
+
+                Draw(spriteBatch, bubble);
+            }
+        }
+
+        /// <summary>Forgets all fade progress, e.g. when bubbles are hidden outright.</summary>
+        public void Reset()
+        {
+            _screenState.Value.Bubbles.Clear();
+        }
+
+        private float GetFadeStep()
+        {
+            if (_config.BubbleFadeDuration <= 0) return 1f;
+
+            return (float)(Game1.currentGameTime.ElapsedGameTime.TotalMilliseconds / _config.BubbleFadeDuration);
+        }
+
+        private void Draw(SpriteBatch spriteBatch, BubbleState bubble)
+        {
+            var character = bubble.Character;
+            var bestItems = bubble.BestItems;
+            var displayTalk = bubble.DisplayTalk;
+
+            var selectedItem = bubble.DisplayGift ? SelectIem(character.Name, bestItems) : -1;
+
+            var displayGift = bubble.DisplayGift && (selectedItem != -1 ||
+                                                     _config.DisplayGenericGiftPrompts ||
+                                                     character.ShouldOverrideForSpouse(_config));
+
+            if (!displayGift && !displayTalk) return;
 
             var hoverVal = (float)(4.0 * Math.Round(Math.Sin(DateTime.Now.TimeOfDay.TotalMilliseconds / 250.0), 2)) -
                            (Game1.tileSize / 2);
 
-            var selectedItem = displayGift ? SelectIem(character.Name, bestItems) : -1;
+            var scale = _config.BubbleScale;
+            var color = Color.White * (BaseOpacity * bubble.Alpha);
+            var origin = new Vector2(
+                             character.Position.X + BubbleOffset.X,
+                             character.Position.Y - BubbleOffset.Y + hoverVal)
+                         + BubbleAnchor * (1f - scale);
 
-            // Icon(s)
-            switch (displayGift)
+            // x/y are offsets from the bubble's top-left corner at 100% bubble size
+            void DrawSprite(Texture2D texture, Rectangle sourceRect, float x, float y, float spriteScale,
+                float layerDepth)
             {
-                case true when displayTalk:
-                    if (selectedItem == -1)
-                    {
-                        if (!_config.DisplayGenericGiftPrompts && !character.ShouldOverrideForSpouse(_config))
-                        {
-                            break;
-                        }
-
-                        DrawThoughtBubble(spriteBatch, xPosition, yPosition + hoverVal);
-
-                        spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                                xPosition + BubbleOffset.X + 6,
-                                yPosition - BubbleOffset.Y + hoverVal + 10)),
-                            _giftSourceRectangle,
-                            Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 1);
-                    }
-                    else
-                    {
-                        DrawThoughtBubble(spriteBatch, xPosition, yPosition + hoverVal);
-
-                        var itemData = ItemRegistry.GetData(bestItems[selectedItem].item.QualifiedItemId);
-
-                        spriteBatch.Draw(itemData.GetTexture(), Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                                xPosition + BubbleOffset.X + 6,
-                                yPosition - BubbleOffset.Y + hoverVal + 10)),
-                            itemData.GetSourceRect(),
-                            Color.White * 0.75f, 0.0f, Vector2.Zero, 3f, SpriteEffects.None, 1);
-                    }
-
-                    break;
-                case true:
-                    if (selectedItem == -1)
-                    {
-                        if (!_config.DisplayGenericGiftPrompts && !character.ShouldOverrideForSpouse(_config))
-                        {
-                            break;
-                        }
-
-                        DrawThoughtBubble(spriteBatch, xPosition, yPosition + hoverVal);
-
-                        spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                                xPosition + BubbleOffset.X + 16,
-                                yPosition - BubbleOffset.Y + hoverVal + 16)),
-                            _giftSourceRectangle,
-                            Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 1);
-                        break;
-                    }
-                    else
-                    {
-                        DrawThoughtBubble(spriteBatch, xPosition, yPosition + hoverVal);
-
-                        var itemData = ItemRegistry.GetData(bestItems[selectedItem].item.QualifiedItemId);
-
-                        spriteBatch.Draw(itemData.GetTexture(), Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                                xPosition + BubbleOffset.X + 8,
-                                yPosition - BubbleOffset.Y + hoverVal + 8)),
-                            itemData.GetSourceRect(),
-                            Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None,
-                            1);
-
-                        var smileySourceRect = GetSmileySourceRect(bestItems[selectedItem].taste);
-
-                        spriteBatch.Draw(_emojiTexture2D, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                                xPosition + BubbleOffset.X + 50,
-                                yPosition - BubbleOffset.Y + hoverVal + 60)),
-                            smileySourceRect,
-                            Color.White * 0.75f, 0.0f, Vector2.Zero, 3f, SpriteEffects.None,
-                            2);
-
-                        if (bestItems[selectedItem].item.Quality is 0) return;
-
-                        var qualitySourceRect = GetQualitySourceRect(bestItems[selectedItem].item.Quality);
-
-                        spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                                xPosition + BubbleOffset.X + 3,
-                                yPosition - BubbleOffset.Y + hoverVal + 61)),
-                            qualitySourceRect,
-                            Color.White * 0.75f, 0.0f, Vector2.Zero, 3f, SpriteEffects.None,
-                            2);
-
-                        break;
-                    }
+                spriteBatch.Draw(texture, Game1.GlobalToLocal(Game1.viewport, origin + new Vector2(x, y) * scale),
+                    sourceRect, color, 0.0f, Vector2.Zero, spriteScale * scale, SpriteEffects.None, layerDepth);
             }
 
-            switch (displayTalk)
-            {
-                case true when displayGift && (_config.DisplayGenericGiftPrompts || selectedItem != -1 ||
-                                               character.ShouldOverrideForSpouse(_config)):
-                    spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                            xPosition + BubbleOffset.X + 22,
-                            yPosition - BubbleOffset.Y + 30 + hoverVal)),
-                        _talkSourceRectangle,
-                        Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None,
-                        2);
-                    break;
-                case true:
-                    DrawThoughtBubble(spriteBatch, xPosition, yPosition + hoverVal);
+            DrawSprite(Game1.mouseCursors, _bubbleSourceRectangle, 0, 0, 4f, 0);
 
-                    spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                            xPosition + BubbleOffset.X + 16,
-                            yPosition - BubbleOffset.Y + 16 + hoverVal)),
-                        _talkSourceRectangle,
-                        Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None,
-                        1);
-                    break;
+            if (displayGift)
+            {
+                if (selectedItem == -1)
+                {
+                    // Generic gift reminder
+                    if (displayTalk)
+                        DrawSprite(Game1.mouseCursors2, _giftSourceRectangle, 6, 10, 4f, 1);
+                    else
+                        DrawSprite(Game1.mouseCursors2, _giftSourceRectangle, 16, 16, 4f, 1);
+                }
+                else
+                {
+                    var (item, taste) = bestItems[selectedItem];
+                    var itemData = ItemRegistry.GetData(item.QualifiedItemId);
+
+                    if (displayTalk)
+                    {
+                        DrawSprite(itemData.GetTexture(), itemData.GetSourceRect(), 6, 10, 3f, 1);
+                    }
+                    else
+                    {
+                        DrawSprite(itemData.GetTexture(), itemData.GetSourceRect(), 8, 8, 4f, 1);
+                        DrawSprite(_emojiTexture2D, GetSmileySourceRect(taste), 50, 60, 3f, 2);
+
+                        if (item.Quality is not 0)
+                        {
+                            DrawSprite(Game1.mouseCursors, GetQualitySourceRect(item.Quality), 3, 61, 3f, 2);
+                        }
+                    }
+                }
+            }
+
+            if (displayTalk)
+            {
+                if (displayGift)
+                    DrawSprite(Game1.mouseCursors2, _talkSourceRectangle, 22, 30, 4f, 2);
+                else
+                    DrawSprite(Game1.mouseCursors2, _talkSourceRectangle, 16, 16, 4f, 1);
             }
         }
 
@@ -185,15 +222,6 @@ namespace BetterFriendship
                 Game1.currentGameTime.TotalGameTime.TotalMilliseconds);
 
             return _lastCycled[npcName].item;
-        }
-
-        private void DrawThoughtBubble(SpriteBatch spriteBatch, float xPosition, float yPosition)
-        {
-            spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                    xPosition + BubbleOffset.X,
-                    yPosition - BubbleOffset.Y)),
-                new Rectangle(141, 465, 20, 24),
-                Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0);
         }
     }
 }
