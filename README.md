@@ -18,7 +18,7 @@
   - Adjust the bubble size and fade in/out time
 
 ## Install 
-**Compatible with Stardew Valley 1.6+ on Linux, Mac, and Windows** [Requires SMAPI 4.0.0 or later.](https://github.com/Pathoschild/SMAPI/releases)
+**Compatible with Stardew Valley 1.6.14+ on Linux, Mac, and Windows** [Requires SMAPI 4.1.0 or later.](https://github.com/Pathoschild/SMAPI/releases)
 1. [Install the latest version of SMAPI](https://github.com/Pathoschild/SMAPI/releases).
 2. Unzip the mod folder into Stardew Valley/Mods.
 3. (optional) Install [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098)﻿ for easy config setting management.
@@ -29,6 +29,8 @@
 - [Admonstrator](https://github.com/Admonstrator]Admonstrator)
 - [SaltSouls](https://github.com/SaltSouls)
 - [mitekano23](https://github.com/mitekano23)
+- [MaximillianRW](https://github.com/MaximillianRW)
+- [CaranudLapin](https://github.com/CaranudLapin)
 
 ## Special Thanks
 - [NormanPCN](https://www.nexusmods.com/stardewvalley/users/124597098) has been incredibly helpful in providing background for some of the game mechanics and helping me test and debug!
